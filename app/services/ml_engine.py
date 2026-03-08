@@ -270,17 +270,21 @@ def run_analysis(df: pd.DataFrame, target_col: str, task_type: str = "auto", tes
     shap_sample = X_test.head(min(100, len(X_test)))
     shap_values_raw = explainer.shap_values(shap_sample)
 
-    # For multiclass, take the first class SHAP values
+   # Handle multiclass SHAP (3D array: classes x samples x features)
     if isinstance(shap_values_raw, list):
-        sv = np.abs(shap_values_raw[0])
+        # older SHAP: list of arrays, one per class
+        sv = np.mean([np.abs(s) for s in shap_values_raw], axis=0)
+        raw_sv = np.mean(shap_values_raw, axis=0)
+    elif shap_values_raw.ndim == 3:
+        # newer SHAP: 3D array (samples x features x classes)
+        sv = np.mean(np.abs(shap_values_raw), axis=2)
+        raw_sv = np.mean(shap_values_raw, axis=2)
     else:
         sv = np.abs(shap_values_raw)
+        raw_sv = shap_values_raw
 
     mean_shap = np.mean(sv, axis=0)
     feature_names = list(X.columns)
-
-    # Direction: mean raw SHAP (signed)
-    raw_sv = shap_values_raw[0] if isinstance(shap_values_raw, list) else shap_values_raw
     mean_shap_signed = np.mean(raw_sv, axis=0)
 
     feature_importances = []
