@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { UploadResponse, PostmortemResponse } from "../types";
+import type { UploadResponse, PostmortemResponse } from "../appTypes";
 
 const API = "http://localhost:8000";
 

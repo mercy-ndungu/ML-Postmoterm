@@ -2,7 +2,7 @@ import { useState } from "react";
 import UploadScreen from "./components/UploadScreen";
 import ConfigureScreen from "./components/ConfigureScreen";
 import ResultsScreen from "./components/ResultsScreen";
-import { UploadResponse, PostmortemResponse } from "./types";
+import type { UploadResponse, PostmortemResponse } from "./appTypes";
 import "./App.css";
 
 type Screen = "upload" | "configure" | "results";

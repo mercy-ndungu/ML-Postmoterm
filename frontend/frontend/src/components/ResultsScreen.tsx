@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PostmortemResponse, Diagnostic } from "../types";
+import type { PostmortemResponse, Diagnostic } from "../appTypes";
 
 interface Props {
   results: PostmortemResponse;
@@ -8,8 +8,8 @@ interface Props {
 
 export default function ResultsScreen({ results, onStartOver }: Props) {
   const [openDiag, setOpenDiag] = useState<string | null>(null);
-  const { metrics, diagnostics, narrative, feature_importances,
-          shap_plot_b64, correlation_plot_b64, residuals_plot_b64 } = results;
+  const { metrics, diagnostics, narrative,
+        shap_plot_b64, correlation_plot_b64, residuals_plot_b64 } = results;
 
   const severityColor = (s: Diagnostic["severity"]) =>
     s === "ok" ? "#4cdd91" : s === "warning" ? "#ffb347" : "#f87171";
